@@ -4,14 +4,41 @@
 
 'use strict';
 
-const script = `let id;
-  const orgin = document.location.origin;
-  if (origin.includes('douyu')) id = '__video';
-  if (origin.includes('huya')) id = 'huya_video';
-  if (origin.includes('huomao')) id = 'live-video';
-  console.log(id);
-  document.getElementById(id).requestPictureInPicture();
-  document.getElementById(id).play();`;
+
+
+const script = `
+  if (document.location.origin.includes('douyu')) {
+    try {
+      document.querySelector('[id^="__video"]').requestPictureInPicture();
+      document.querySelector('[id^="__video"]').play();
+    } catch (err) {
+      document.querySelector('video').requestPictureInPicture();
+      document.querySelector('video').play();
+    }
+  }
+  else if (document.location.origin.includes('huya')) {
+    try {
+      document.getElementById('huya_video').requestPictureInPicture();
+      document.getElementById('huya_video').play();
+    } catch (err) {
+      document.querySelector('video').requestPictureInPicture();
+      document.querySelector('video').play();
+    }
+  }
+  else if (document.location.origin.includes('huomao')) {
+    try {
+      document.getElementById('live-video').requestPictureInPicture();
+      document.getElementById('live-video').play();
+    } catch (err) {
+      document.querySelector('video').requestPictureInPicture();
+      document.querySelector('video').play();
+    }
+  }
+  else {
+    document.querySelector('video').requestPictureInPicture();
+    document.querySelector('video').play();
+  }
+  `;
 
 submitPipRequest.onclick = function(element) {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {

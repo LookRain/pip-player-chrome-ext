@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 'use strict';
-const paths = ['douyu.com', 'huya.com', 'huomao.com'];
+const paths = ['com'];
 const genConditions = (list) => {
   return list.map((word) => {
     return new chrome.declarativeContent.PageStateMatcher({
