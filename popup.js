@@ -32,9 +32,12 @@ const script = `
    */
   function pictureInPicture(video) {
     video.requestPictureInPicture()
-    .then(() => {
-      video.play();
-    });
+      .then(() => {
+        video.play();
+      })
+      .catch(err => {
+        setTimeout(init, 1000);
+      })  
   }
   /**
    * 检测视频发生变化
@@ -55,6 +58,7 @@ const script = `
    */
   function init() {
     const video = getVideoObj();
+    console.log('video', video);
     if (video) {
       observe(video);
       pictureInPicture(video);
