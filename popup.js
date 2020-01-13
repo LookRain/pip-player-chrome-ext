@@ -5,6 +5,10 @@
 'use strict';
 
 const script = `
+  /**
+   * 获取video元素
+   * @returns HtmlVideoElement
+   */
   function getVideoObj() {
     const origin = document.location.origin;
     try {
@@ -22,11 +26,44 @@ const script = `
     }
     return video;
   }
-  video.requestPictureInPicture()
+  /**
+   * 开启画中画
+   * @param {HTMlVideoElement} video 
+   */
+  function pictureInPicture(video) {
+    video.requestPictureInPicture()
     .then(() => {
       video.play();
     });
-  `;
+  }
+  /**
+   * 检测视频发生变化
+   * @param {HTMLVideoElement} video 
+   */
+  function observe(video) {
+    if (observe.__ob__) {
+      observe.__ob__.disconnect();
+    }
+    observe.__ob__ = new MutationObserver(function() {
+      init();
+    });
+    observe.__ob__.observe(video, { attributes: true });
+  }
+
+  /**
+   * 程序入口
+   */
+  function init() {
+    const video = getVideoObj();
+    if (video) {
+      observe(video);
+      pictureInPicture(video);
+    } else {
+      setTimeout(init, 1000);
+    }
+  }
+  init();
+`;
 
 submitPipRequest.onclick = function(element) {
     chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
