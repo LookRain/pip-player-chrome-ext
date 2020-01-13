@@ -4,40 +4,28 @@
 
 'use strict';
 
-
-
 const script = `
-  if (document.location.origin.includes('douyu')) {
+  function getVideoObj() {
+    const origin = document.location.origin;
     try {
-      document.querySelector('[id^="__video"]').requestPictureInPicture();
-      document.querySelector('[id^="__video"]').play();
-    } catch (err) {
-      document.querySelector('video').requestPictureInPicture();
-      document.querySelector('video').play();
+      if (origin.includes('douyu')) {
+        video = document.querySelector('[id^="__video"]');
+      } else if (origin.includes('huya')) {
+        video = document.getElementById('huya_video');
+      } else if (origin.includes('huomao')) {
+        video = document.getElementById('live-video');
+      } else {
+        throw new Error('normal video')
+      }    
+    } catch(err) {
+      video = document.querySelector('video');
     }
+    return video;
   }
-  else if (document.location.origin.includes('huya')) {
-    try {
-      document.getElementById('huya_video').requestPictureInPicture();
-      document.getElementById('huya_video').play();
-    } catch (err) {
-      document.querySelector('video').requestPictureInPicture();
-      document.querySelector('video').play();
-    }
-  }
-  else if (document.location.origin.includes('huomao')) {
-    try {
-      document.getElementById('live-video').requestPictureInPicture();
-      document.getElementById('live-video').play();
-    } catch (err) {
-      document.querySelector('video').requestPictureInPicture();
-      document.querySelector('video').play();
-    }
-  }
-  else {
-    document.querySelector('video').requestPictureInPicture();
-    document.querySelector('video').play();
-  }
+  video.requestPictureInPicture()
+    .then(() => {
+      video.play();
+    });
   `;
 
 submitPipRequest.onclick = function(element) {
