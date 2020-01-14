@@ -108,7 +108,8 @@ import {stateMachine, Commands} from './constants';
    * For multiple <video> in the page, if played incorrectly, use this
    */
   function onNextVideoPipPlay() {
-    currentVideoIndex++;
+    const len = document.querySelectorAll('video').length;
+    currentVideoIndex >= len - 1 ? currentVideoIndex = 0 : currentVideoIndex ++;
     const video = document.querySelectorAll('video')[currentVideoIndex];
     pictureInPicture(video as HTMLVideoElementNew);
   }
