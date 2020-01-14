@@ -1,6 +1,6 @@
 {
   "name": "悬浮画中画播放器",
-  "version": "2.0",
+  "version": "2.1",
   "description": "使用chrome提供的picture-in-picture api让直播以画中画模式播放。 目前支持斗鱼，虎牙,火猫直播以及各种使用html5播放器的网站。",
   "permissions": [
     "declarativeContent",
