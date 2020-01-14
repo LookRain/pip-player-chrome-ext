@@ -7,9 +7,9 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
-    "prep": "cp static/* dist && cp -r images dist",
-    "build": "yarn clean && parcel build src/popup.html src/*.ts && yarn prep",
-    "dev": "parcel watch build src/popup.html src/*.ts && yarn prep"
+    "release": "cp static/* dist && cp -r images dist && zip release.zip dist",
+    "build": "yarn clean && parcel build src/popup.html src/*.ts && yarn release",
+    "dev": "parcel watch build src/popup.html src/*.ts && yarn release"
   },
   "devDependencies": {
     "@types/chrome": "^0.0.91",
