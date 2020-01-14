@@ -10,6 +10,7 @@ const script = `
    * @returns HtmlVideoElement
    */
   function getVideoObj() {
+    let video = null;
     const origin = document.location.origin;
     try {
       if (origin.includes('douyu')) {
@@ -58,7 +59,6 @@ const script = `
    */
   function init() {
     const video = getVideoObj();
-    console.log('video', video);
     if (video) {
       observe(video);
       pictureInPicture(video);
