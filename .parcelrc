@@ -1,0 +1,9 @@
+{
+  "optimizers": {
+    "*.js": ["@parcel/optimizer-uglify"],
+    "*.css": ["@parcel/optimizer-cssnano"],
+    "*.html": ["@parcel/optimizer-htmlnano"],
+    "*.{png,jpg,jpeg,svg,...}": ["@parcel/optimizer-imagemin"]
+  },
+  "reporters": ["@parcel/reporter-cli"]
+}
