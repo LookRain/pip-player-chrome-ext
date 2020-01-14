@@ -4,7 +4,6 @@ import {stateMachine, Commands} from './constants';
 
 function sendCommand(command: Commands) {
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
-    console.log(tabs);
     if (tabs[0].id) {
       chrome.tabs.sendMessage(tabs[0].id, {command});
     }
