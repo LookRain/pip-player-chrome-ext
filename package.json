@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "clean": "rm -rf dist",
-    "release": "cp static/* dist && cp -r images dist && zip release.zip dist",
+    "release": "cp static/* dist && cp -r images dist && zip -r release.zip dist",
     "build": "yarn clean && parcel build src/popup.html src/*.ts && yarn release",
     "dev": "parcel watch build src/popup.html src/*.ts && yarn release"
   },
