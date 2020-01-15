@@ -9,6 +9,7 @@
     "clean": "rm -rf dist && rm release.zip",
     "release": "cp static/* dist && cp -r images dist && zip -r release.zip dist",
     "build": "yarn clean && parcel build src/popup.html src/*.ts && yarn release",
+    "build-only": "parcel build src/popup.html src/*.ts && cp static/* dist && cp -r images dist",
     "dev": "parcel watch build src/popup.html src/*.ts && yarn release"
   },
   "devDependencies": {

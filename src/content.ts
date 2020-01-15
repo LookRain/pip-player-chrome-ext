@@ -1,30 +1,30 @@
-import {stateMachine, Commands} from './constants';
+import { stateMachine, Commands } from "./constants";
 
 (function() {
   interface HTMLVideoElementNew extends HTMLVideoElement {
     requestPictureInPicture: () => Promise<any>;
   }
 
-  let state: keyof typeof stateMachine = 'idle';
+  let state: keyof typeof stateMachine = "idle";
   const transition = (
-    action: 'PLAY' | 'SUCCESS' | 'FAIL' | 'QUIT' | 'PLAY',
+    action: "PLAY" | "SUCCESS" | "FAIL" | "QUIT" | "PLAY"
   ) => {
     const currentState = stateMachine[state];
     if (action in currentState) {
       state = (currentState as any)[action];
     }
-    chrome.runtime.sendMessage({state});
+    chrome.runtime.sendMessage({ state });
   };
 
   const reset = () => {
-    state = 'idle';
-    chrome.runtime.sendMessage({state});
+    state = "idle";
+    chrome.runtime.sendMessage({ state });
   };
 
   const siteToQuerySelectorMap = {
     douyu: '[id^="__video"]',
-    huya: '#huya_video',
-    huomao: '#live-video',
+    huya: "#huya_video",
+    huomao: "#live-video"
   };
 
   let currentVideoIndex = 0;
@@ -34,22 +34,22 @@ import {stateMachine, Commands} from './constants';
     let video: HTMLVideoElementNew | null;
 
     const matchedSite = Object.keys(
-      siteToQuerySelectorMap,
+      siteToQuerySelectorMap
     ).find(sitePartialName => origin.includes(sitePartialName));
 
     if (matchedSite) {
       video = document.querySelector(
         siteToQuerySelectorMap[
           matchedSite as keyof typeof siteToQuerySelectorMap
-        ],
+        ]
       );
     } else {
-      video = document.querySelector('video') as HTMLVideoElementNew;
+      video = document.querySelector("video") as HTMLVideoElementNew;
     }
 
     // if there're more than 1 <video> in the DOM, tell popup to display message and enable button to select next video
-    if (document.querySelectorAll('video').length > 1) {
-      chrome.runtime.sendMessage({multiVideo: true});
+    if (document.querySelectorAll("video").length > 1) {
+      chrome.runtime.sendMessage({ multiVideo: true });
     }
 
     return video;
@@ -60,17 +60,16 @@ import {stateMachine, Commands} from './constants';
    */
   async function pictureInPicture(video: HTMLVideoElementNew) {
     try {
-      transition('PLAY');
+      transition("PLAY");
       await video.requestPictureInPicture();
       video.play();
-      transition('SUCCESS');
+      transition("SUCCESS");
     } catch (err) {
-      transition('FAIL');
+      transition("FAIL");
       reset();
       setTimeout(init, 1000);
     }
   }
-
 
   function init() {
     const video = getVideoEl();
@@ -102,15 +101,17 @@ import {stateMachine, Commands} from './constants';
    */
   async function onOriginalPlayerPlay() {
     await (document as any).exitPictureInPicture();
-    transition('QUIT');
+    transition("QUIT");
   }
   /**
    * For multiple <video> in the page, if played incorrectly, use this
    */
   function onNextVideoPipPlay() {
-    const len = document.querySelectorAll('video').length;
-    currentVideoIndex >= len - 1 ? currentVideoIndex = 0 : currentVideoIndex ++;
-    const video = document.querySelectorAll('video')[currentVideoIndex];
+    const len = document.querySelectorAll("video").length;
+    currentVideoIndex >= len - 1
+      ? (currentVideoIndex = 0)
+      : currentVideoIndex++;
+    const video = document.querySelectorAll("video")[currentVideoIndex];
     pictureInPicture(video as HTMLVideoElementNew);
   }
   /**
@@ -124,13 +125,13 @@ import {stateMachine, Commands} from './constants';
 
   chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     const command: Commands = request.command;
-    if (command === 'play') {
+    if (command === "play") {
       onPipPlay();
     }
-    if (command === 'original-player-play') {
+    if (command === "original-player-play") {
       onOriginalPlayerPlay();
     }
-    if (command === 'play-next') {
+    if (command === "play-next") {
       onNextVideoPipPlay();
     }
   });
