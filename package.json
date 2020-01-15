@@ -6,7 +6,7 @@
   "author": "Lu Yu (Louis) <brantscube@hotmail.com>",
   "license": "MIT",
   "scripts": {
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist && rm release.zip",
     "release": "cp static/* dist && cp -r images dist && zip -r release.zip dist",
     "build": "yarn clean && parcel build src/popup.html src/*.ts && yarn release",
     "dev": "parcel watch build src/popup.html src/*.ts && yarn release"

@@ -76,11 +76,11 @@ import {stateMachine, Commands} from './constants';
     const video = getVideoEl();
 
     if (video) {
-      const observer = new MutationObserver(async () => {
-        transition('PLAY');
-        init();
-      });
-      observer.observe(video as HTMLVideoElementNew, {attributes: true});
+      // const observer = new MutationObserver(async () => {
+      //   transition('PLAY');
+      //   init();
+      // });
+      // observer.observe(video as HTMLVideoElementNew, {attributes: true});
       // observe(video);
       pictureInPicture(video);
     } else {
